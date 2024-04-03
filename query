@@ -1,0 +1,22 @@
+CREATE TABLE bank1 (c_id NUMBER(10),salary NUMBER(10));
+INSERT INTO bank1 VALUES (301, 10000);
+INSERT INTO bank1 VALUES (302, 15000);
+SELECT * FROM bank1;
+
+CREATE OR REPLACE PACKAGE cu_salary6 AS PROCEDURE find_salary(id IN bank1.c_id%TYPE);
+END cu_salary6;
+
+
+CREATE OR REPLACE PACKAGE BODY cu_salary6 AS PROCEDURE find_salary(id IN bank1.c_id%TYPE) IS csal bank1.salary%TYPE;
+BEGIN
+SELECT salary INTO csal FROM bank1 WHERE c_id = id;
+DBMS_OUTPUT.put_line('Salary for the given employee id: ' || csal);
+END find_salary;
+END cu_salary6;
+
+
+DECLARE
+code bank1.c_id%TYPE := 302;
+BEGIN
+cu_salary6.find_salary(code);
+END;
